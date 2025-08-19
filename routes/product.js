@@ -10,22 +10,29 @@ const {
   deleteProduct,
 } = require("../controllers/product");
 
-// GET /products - list all the products
+// get all products
 router.get("/", async (req, res) => {
-  const category = req.query.category;
-
-  res.send(await getProducts(category));
+  try {
+    const category = req.query.category;
+    res.status(200).send(await getProducts(category));
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "Unknown error" });
+  }
 });
 
-// GET /products/:id - get a specific product
+// get one product
 router.get("/:id", async (req, res) => {
-  // retrieve id from params
-  const id = req.params.id;
-
-  res.send(await getProduct(id));
+  try {
+    const id = req.params.id;
+    res.status(200).send(await getProduct(id));
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error: "Unknown error" });
+  }
 });
 
-// POST /products - add new product
+// add new product
 router.post("/", async (req, res) => {
   try {
     const name = req.body.name;
@@ -33,22 +40,21 @@ router.post("/", async (req, res) => {
     const price = req.body.price;
     const category = req.body.category;
 
-    // check error - make sure all the fields are not empty
+    // error checking
     if (!name || !price || !category) {
       return res.status(400).send({
         message: "All the fields are required",
       });
     }
 
-    res
-      .status(200)
-      .send(await addProduct(name, description, price, category));
+    res.status(200).send(await addProduct(name, description, price, category));
   } catch (error) {
+    console.log(error);
     res.status(400).send({ message: "Unknown error" });
   }
 });
 
-// PUT /products/68941c3724035d347f420f60 - update product
+// update product
 router.put("/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -57,7 +63,6 @@ router.put("/:id", async (req, res) => {
     const price = req.body.price;
     const category = req.body.category;
 
-    // check error - make sure all the fields are not empty
     if (!name || !price || !category) {
       return res.status(400).send({
         message: "All the fields are required",
@@ -66,15 +71,14 @@ router.put("/:id", async (req, res) => {
 
     res
       .status(200)
-      .send(
-        await updateProduct(id, name, description, price, category)
-      );
+      .send(await updateProduct(id, name, description, price, category));
   } catch (error) {
+    console.log(error);
     res.status(400).send({ message: "Unknown error" });
   }
 });
 
-// DELETE /products/68941c3724035d347f420f60 - delete product
+// delete product
 router.delete("/:id", async (req, res) => {
   try {
     const id = req.params.id;
@@ -84,6 +88,7 @@ router.delete("/:id", async (req, res) => {
       message: `Product with the ID of ${id} has been deleted`,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ message: "Unknown error" });
   }
 });

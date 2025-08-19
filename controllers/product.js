@@ -21,9 +21,9 @@ async function getProduct(id) {
 async function addProduct(name, description, price, category) {
   // create new product
   const newProduct = new Product({
-    name, 
-    description, 
-    price, 
+    name,
+    description,
+    price,
     category,
   });
   // save the new product into MongoDB
@@ -35,10 +35,10 @@ async function updateProduct(id, name, description, price, category) {
   return await Product.findByIdAndUpdate(
     id,
     {
-      name: name,
-      description: description,
-      price: price,
-      category: category,
+      name,
+      description,
+      price,
+      category,
     },
     {
       new: true,
