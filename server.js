@@ -1,3 +1,6 @@
+// load the environment variable
+require("dotenv").config();
+
 const express = require("express");
 // import mongoose
 const mongoose = require("mongoose");
@@ -34,6 +37,7 @@ app.get("/", (req, res) => {
 // import router
 const productRouter = require("./routes/product");
 app.use("/products", productRouter);
+app.use("/orders", require("./routes/order"))
 
 // start the express
 app.listen(5201, () => {

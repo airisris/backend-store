@@ -14,7 +14,8 @@ const {
 router.get("/", async (req, res) => {
   try {
     const category = req.query.category;
-    res.status(200).send(await getProducts(category));
+    const page = req.query.page;
+    res.status(200).send(await getProducts(category, page));
   } catch (error) {
     console.log(error);
     res.status(400).send({ error: "Unknown error" });
